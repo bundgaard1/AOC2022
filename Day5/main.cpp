@@ -19,17 +19,17 @@ static vector<vector<char>> stacks;
 
 int main(void) {
     input_stacks();
-    print_stacks();
+    // print_stacks();
 
     part1();
-    print_stacks();
+    // print_stacks();
 
     stacks.clear();
 
     input_stacks();
 
     part2();
-    print_stacks();
+    // print_stacks();
 
     return 0;
 }
@@ -64,6 +64,7 @@ void part2() {
     for (int i = 1; i < 10; i++) {
         cout << stacks[i].back();
     }
+    cout << endl;
     return;
 }
 
@@ -85,6 +86,7 @@ void part1() {
     for (int i = 1; i < 10; i++) {
         cout << stacks[i].back();
     }
+    cout << endl;
     return;
 }
 
