@@ -13,7 +13,7 @@ vector<string> tokenize(string);
 void parse_input(Directory*);
 
 int main(void) {
-    Directory* root = new Directory("/");
+        Directory* root = new Directory("/");
 
     parse_input(root);
 
