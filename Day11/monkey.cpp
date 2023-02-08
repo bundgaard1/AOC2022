@@ -26,11 +26,11 @@ class Monkey {
     ~Monkey() {}
 
     long int inspect() {
-        long int currItem = this->items.at(0);
+        long long currItem = this->items.at(0);
         inspects++;
 
         // cout << currItem << ' ';
-        long int coefficent = this->opValue;
+        long long coefficent = this->opValue;
         if (coefficent == 0) coefficent = currItem;
         if (op == '*') {
             currItem = currItem * coefficent;
@@ -38,8 +38,9 @@ class Monkey {
             currItem = currItem + coefficent;
         }
         // cout << currItem << ' ';
-        currItem = abs(currItem % modd);
+        currItem = currItem % modd;
 
+        // currItem /= 3;
         // cout << currItem << ' ';
 
         return currItem;

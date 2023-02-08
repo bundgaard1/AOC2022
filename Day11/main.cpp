@@ -16,10 +16,15 @@ void print_worry(vector<Monkey> m);
 int main(void) {
     vector<Monkey> monkeys;
 
-    monkeys.push_back(Monkey({79, 98}, 23, 2, 3, '*', 19));
-    monkeys.push_back(Monkey({54, 65, 75, 74}, 19, 2, 0, '+', 6));
-    monkeys.push_back(Monkey({79, 60, 97}, 13, 1, 3, '*', 0));
-    monkeys.push_back(Monkey({74}, 17, 0, 1, '+', 3));
+    monkeys.push_back(Monkey({93, 54, 69, 66, 71}, 7, 7, 1, '*', 3));
+    monkeys.push_back(Monkey({89, 51, 80, 66}, 19, 5, 7, '*', 17));
+    monkeys.push_back(Monkey({90, 92, 63, 91, 96, 63, 64}, 13, 4, 3, '+', 1));
+    monkeys.push_back(Monkey({65, 77}, 3, 4, 6, '+', 2));
+    monkeys.push_back(Monkey({76, 68, 94}, 2, 0, 6, '*', 0));
+    monkeys.push_back(Monkey({86, 65, 66, 97, 73, 83}, 11, 2, 3, '+', 8));
+    monkeys.push_back(Monkey({78}, 17, 0, 1, '+', 6));
+    monkeys.push_back(
+        Monkey({89, 57, 59, 61, 87, 55, 55, 88}, 5, 2, 5, '+', 7));
 
     // Find booster
     for (int i = 0; i < monkeys.size(); i++) {
@@ -27,7 +32,7 @@ int main(void) {
     }
     cout << modd << endl;
 
-    for (int round = 1; round <= 1000; round++) {
+    for (int round = 1; round <= 10000; round++) {
         for (int i = 0; i < monkeys.size(); i++) {
             while (!monkeys.at(i).items.empty()) {
                 long int newValue = monkeys.at(i).inspect();
