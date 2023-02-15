@@ -4,17 +4,13 @@
 
 #include <fstream>
 #include <iostream>
+#include <queue>
+#include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 using namespace std;
-
-struct valve {
-    string name;
-    int flowrate;
-    vector<string> tunnels;
-    bool open;
-};
 
 vector<string> tokenize(string l, char tokenizer) {
     vector<string> tokens;
@@ -26,69 +22,72 @@ vector<string> tokenize(string l, char tokenizer) {
     return tokens;
 }
 
-static vector<valve> valves;
-static int mostPressure = 0;
-static int iteretions = 0;
-
-int valve_index(string val) {
-    for (int i = 0; i < valves.size(); i++) {
-        if (val == valves.at(i).name) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void most_pressure(int mins, int totalPressure, int pps, string vName) {
-    mins++;
-    totalPressure += pps;
-    iteretions++;
-    if (iteretions % 10000000 == 0) cout << iteretions;
-
-    int currValveIndex = valve_index(vName);
-    valve currValve = valves.at(currValveIndex);
-    if (mins == 30) {
-        if (mostPressure < totalPressure) {
-            mostPressure = totalPressure;
-            cout << mostPressure << endl;
-        }
-        return;
-    }
-    // Move
-    for (int i = 0; i < currValve.tunnels.size(); i++) {
-        string next = currValve.tunnels.at(i);
-        most_pressure(mins, totalPressure, pps, next);
-    }
-    // Open
-    if (!currValve.open && currValve.flowrate != 0) {
-        currValve.open = true;
-        pps += currValve.flowrate;
-        most_pressure(mins, totalPressure, pps, vName);
-    }
-
-    most_pressure(mins, totalPressure, pps, vName);
-}
-
 int main(void) {
+    unordered_map<string, int> valves;
+    unordered_map<string, vector<string>> tunnels;
+
     ifstream inputFile;
     inputFile.open("input.txt");
     string line;
 
+    // Parse input
     while (getline(inputFile, line)) {
         vector<string> tokens = tokenize(line, ' ');
-        valve v;
-        v.name = tokens.at(0);
-        v.flowrate = stoi(tokens.at(1));
-        v.open = false;
+        string name = tokens.at(0);
+        int flow = stoi(tokens.at(1));
+        valves[name] = flow;
+        tunnels[name];
         for (int i = 2; i < tokens.size(); i++) {
-            v.tunnels.push_back(tokens.at(i));
+            tunnels[name].push_back(tokens.at(i));
         }
-        valves.push_back(v);
     }
 
-    most_pressure(0, 0, 0, "AA");
+    // Optimize set
+    unordered_map<string, unordered_map<string, int>> dists;
 
-    cout << "Most pressure: " << mostPressure << endl;
+    for (auto valve : valves) {
+        if ((valve.first != "AA") && (valve.second != 0)) {
+            continue;
+        }
+
+        dists.at(valve.first).at(valve.first) = 0;
+        dists.at(valve.first).at("AA") = 0;
+
+        cout << "hej" << endl;
+        set<string> visited = {valve.first};
+
+        queue<pair<int, string>> q;
+
+        q.push(pair<int, string>(0, valve.first));
+
+        while (!q.empty()) {
+            pair<int, string> curr = q.front();
+            q.pop();
+
+            for (auto neighbor : tunnels[curr.second]) {
+                if (visited.count(neighbor)) {
+                    continue;
+                }
+                visited.insert(neighbor);
+
+                if (valves.at(neighbor)) {
+                    dists.at(valve.first).at(neighbor) = curr.first + 1;
+                }
+                q.push({curr.first + 1, neighbor});
+            }
+        }
+
+        dists.at(valve.first).erase(dists.at(valve.first).find(valve.first));
+        if (valve.first == "AA") dists.at(valve.first).erase("AA");
+    }
+
+    for (auto dist : dists) {
+        cout << dist.first << ": ";
+        for (auto a : dist.second) {
+            cout << "(" << a.first << ", " << a.second << "), ";
+        }
+        cout << endl;
+    }
 
     inputFile.close();
 
