@@ -1,3 +1,7 @@
+# Advent of code 2022
+-------------------------------------------------------
+This was all done with no extencive knowledge of data structures and algorithms, just basic programming.
+
 | Day | Made myself |
 |-----|-------------|
 | 1   | YES!        |
